@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: init
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/local
+    username: jjp
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
