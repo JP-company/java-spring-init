@@ -1,4 +1,4 @@
-package jjp.java.spring.init.interfaces.dto.request;
+package jjp.java.spring.init.interfaces.api.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

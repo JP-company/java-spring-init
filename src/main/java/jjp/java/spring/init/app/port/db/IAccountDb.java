@@ -3,12 +3,15 @@ package jjp.java.spring.init.app.port.db;
 import java.util.Optional;
 import jjp.java.spring.init.domain.command.AccountInsert;
 import jjp.java.spring.init.domain.model.Account;
+import jjp.java.spring.init.domain.model.AccountLogin;
 
-public interface AccountDb {
+public interface IAccountDb {
 
   void save(AccountInsert accountInsert);
 
   Optional<Account> findOneBy(int id);
 
-  boolean existsBy(String address);
+  Optional<AccountLogin> findOneLoginBy(String phoneNumber);
+
+  boolean existsBy(String phoneNumber);
 }

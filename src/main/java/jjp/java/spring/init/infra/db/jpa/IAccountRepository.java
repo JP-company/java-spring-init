@@ -8,5 +8,7 @@ public interface IAccountRepository extends JpaRepository<AccountEntity, Integer
 
   Optional<AccountEntity> findOneById(int id);
 
-  boolean existsByAddress(String address);
+  Optional<AccountEntity> findOneByPhoneNumber(String phoneNumber);
+
+  boolean existsByPhoneNumber(String phoneNumber);
 }

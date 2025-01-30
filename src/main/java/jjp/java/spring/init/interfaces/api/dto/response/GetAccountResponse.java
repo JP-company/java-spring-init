@@ -1,4 +1,4 @@
-package jjp.java.spring.init.interfaces.dto.response;
+package jjp.java.spring.init.interfaces.api.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -9,8 +9,11 @@ public record GetAccountResponse(
     @Schema(example = "1")
     int accountId,
 
-    @Schema(description = "계정 주소", example = "wjsdj2008@gmail.com")
-    String address,
+    @Schema(description = "이름", example = "전정표")
+    String name,
+
+    @Schema(description = "핸드폰 번호", example = "01087144246")
+    String phoneNumber,
 
     @Schema(description = "계정 상태", example = "ACTIVE")
     AccountStatus status,
@@ -22,7 +25,8 @@ public record GetAccountResponse(
   public GetAccountResponse(AccountGetOneViewModel viewModel) {
     this(
         viewModel.getAccountId(),
-        viewModel.getAddress(),
+        viewModel.getName(),
+        viewModel.getPhoneNumber(),
         viewModel.getAccountStatus(),
         viewModel.getCreatedAt()
     );
