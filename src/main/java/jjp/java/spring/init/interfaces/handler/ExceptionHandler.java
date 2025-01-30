@@ -1,6 +1,6 @@
 package jjp.java.spring.init.interfaces.handler;
 
-import jjp.java.spring.init.domain.common.error.CustomException;
+import jjp.java.spring.init.domain.common.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

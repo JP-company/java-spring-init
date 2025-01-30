@@ -1,8 +1,8 @@
 package jjp.java.spring.init.domain.usecase;
 
-import static jjp.java.spring.init.domain.common.error.AccountException.AccountErrorKey.INCORRECT_PASSWORD;
+import static jjp.java.spring.init.domain.common.exception.AccountException.AccountErrorKey.INCORRECT_PASSWORD;
 
-import jjp.java.spring.init.domain.common.error.AccountException;
+import jjp.java.spring.init.domain.common.exception.AccountException;
 
 public record AccountLoginVerify(
     int accountId
