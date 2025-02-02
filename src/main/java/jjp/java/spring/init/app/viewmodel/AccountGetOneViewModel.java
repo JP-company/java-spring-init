@@ -12,8 +12,8 @@ public record AccountGetOneViewModel(
     return this.account.id();
   }
 
-  public String getAddress() {
-    return this.account.address();
+  public String getName() {
+    return this.account.nickname();
   }
 
   public AccountStatus getAccountStatus() {

@@ -1,4 +1,4 @@
-package jjp.java.spring.init.domain.common.error;
+package jjp.java.spring.init.domain.common.exception;
 
 import lombok.Getter;
 

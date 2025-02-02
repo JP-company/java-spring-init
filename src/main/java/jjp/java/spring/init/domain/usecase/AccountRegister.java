@@ -1,32 +1,38 @@
 package jjp.java.spring.init.domain.usecase;
 
-import static jjp.java.spring.init.domain.common.error.AccountException.AccountErrorKey.EXISTS_ACCOUNT;
-import static jjp.java.spring.init.domain.common.error.AccountException.AccountErrorKey.NOT_EMAIL_PATTERN;
+import static jjp.java.spring.init.domain.common.exception.AccountException.AccountErrorKey.EXISTS_EMAIL;
+import static jjp.java.spring.init.domain.common.exception.AccountException.AccountErrorKey.WRONG_ACCESS;
 
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 import jjp.java.spring.init.domain.command.AccountInsert;
-import jjp.java.spring.init.domain.common.error.AccountException;
+import jjp.java.spring.init.domain.common.exception.AccountException;
 import jjp.java.spring.init.domain.model.type.AccountStatus;
 
 public record AccountRegister(
-    String address,
+    String email,
+    String nickname,
     LocalDateTime now
 ) {
 
-  private static final Pattern EMAIL_PATTERN = Pattern.compile(
-      "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+  private static final Pattern NICKNAME_PATTERN = Pattern.compile(
+      "^(?=.*[a-z])(?=.*\\d)(?=.*[!?@%^*+=])[a-zA-Z\\d!?@%^*+=]{8,20}$");
 
   public AccountInsert toInsert() {
-    return new AccountInsert(this.address, AccountStatus.ACTIVE, this.now);
+    return new AccountInsert(
+        this.email,
+        this.nickname,
+        AccountStatus.ACTIVE,
+        this.now
+    );
   }
 
-  public AccountRegister validate(boolean existsByAddress) {
-    if (!EMAIL_PATTERN.matcher(this.address).matches()) {
-      throw new AccountException(NOT_EMAIL_PATTERN);
+  public AccountRegister validate(boolean emailAuthCodeVerified, boolean existsByEmail) {
+    if (!emailAuthCodeVerified) {
+      throw new AccountException(WRONG_ACCESS);
     }
-    if (existsByAddress) {
-      throw new AccountException(EXISTS_ACCOUNT);
+    if (existsByEmail) {
+      throw new AccountException(EXISTS_EMAIL);
     }
     return this;
   }

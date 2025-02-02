@@ -16,3 +16,15 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: smartwire98
+    password: pxikxyqqapcokvpb
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
