@@ -13,11 +13,7 @@ public record AccountGetOneViewModel(
   }
 
   public String getName() {
-    return this.account.name();
-  }
-
-  public String getPhoneNumber() {
-    return this.account.phoneNumber();
+    return this.account.nickname();
   }
 
   public AccountStatus getAccountStatus() {

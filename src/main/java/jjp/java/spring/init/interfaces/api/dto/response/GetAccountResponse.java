@@ -12,9 +12,6 @@ public record GetAccountResponse(
     @Schema(description = "이름", example = "전정표")
     String name,
 
-    @Schema(description = "핸드폰 번호", example = "01087144246")
-    String phoneNumber,
-
     @Schema(description = "계정 상태", example = "ACTIVE")
     AccountStatus status,
 
@@ -26,7 +23,6 @@ public record GetAccountResponse(
     this(
         viewModel.getAccountId(),
         viewModel.getName(),
-        viewModel.getPhoneNumber(),
         viewModel.getAccountStatus(),
         viewModel.getCreatedAt()
     );

@@ -1,4 +1,4 @@
-package jjp.java.spring.init.interfaces.interceptor;
+package jjp.java.spring.init.interfaces.interceptor.resolver;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jjp.java.spring.init.domain.model.Account;

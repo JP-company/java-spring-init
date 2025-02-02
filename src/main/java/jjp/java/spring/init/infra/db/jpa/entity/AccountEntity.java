@@ -28,11 +28,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "account", indexes = {
-    @Index(name = "idx_account_name", columnList = "name"),
+    @Index(name = "idx_account_name", columnList = "nickname"),
     @Index(name = "idx_account_status", columnList = "status"),
     @Index(name = "idx_account_created_at", columnList = "created_at"),
 }, uniqueConstraints = {
-    @UniqueConstraint(name = "uc_account_phone_number", columnNames = {"phone_number"})
+    @UniqueConstraint(name = "uc_account_email", columnNames = {"email"})
 })
 public class AccountEntity {
 
@@ -41,14 +41,11 @@ public class AccountEntity {
   @Column(name = "id", nullable = false)
   private Integer id;
 
-  @Column(name = "name", nullable = false, length = 10)
-  private String name;
+  @Column(name = "email", nullable = false, unique = true)
+  private String email;
 
-  @Column(name = "phone_number", nullable = false, length = 20)
-  private String phoneNumber;
-
-  @Column(name = "hashed_password", nullable = false)
-  private String hashedPassword;
+  @Column(name = "nickname", nullable = false, length = 10)
+  private String nickname;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false, length = 10)
@@ -57,22 +54,25 @@ public class AccountEntity {
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;
 
+  public static AccountEntity of(int accountId) {
+    return new AccountEntity(accountId, null, null, null, null);
+  }
+
   public static AccountEntity of(AccountInsert accountInsert) {
     return new AccountEntity(
         null,
-        accountInsert.name(),
-        accountInsert.phoneNumber(),
-        accountInsert.hashedPassword(),
+        accountInsert.email(),
+        accountInsert.nickname(),
         accountInsert.status(),
         accountInsert.now()
     );
   }
 
   public Account toAccountModel() {
-    return new Account(this.id, this.name, this.phoneNumber, this.status, this.createdAt);
+    return new Account(this.id, this.nickname, this.status, this.createdAt);
   }
 
   public AccountLogin toAccountLoginModel() {
-    return new AccountLogin(this.id, this.hashedPassword);
+    return new AccountLogin(this.id);
   }
 }

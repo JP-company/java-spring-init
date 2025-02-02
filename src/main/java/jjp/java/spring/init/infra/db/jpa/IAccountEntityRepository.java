@@ -4,11 +4,11 @@ import java.util.Optional;
 import jjp.java.spring.init.infra.db.jpa.entity.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IAccountRepository extends JpaRepository<AccountEntity, Integer> {
+public interface IAccountEntityRepository extends JpaRepository<AccountEntity, Integer> {
 
   Optional<AccountEntity> findOneById(int id);
 
-  Optional<AccountEntity> findOneByPhoneNumber(String phoneNumber);
+  boolean existsByEmail(String email);
 
-  boolean existsByPhoneNumber(String phoneNumber);
+  Optional<AccountEntity> findOneByEmail(String email);
 }

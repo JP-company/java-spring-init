@@ -18,7 +18,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class JwtAuthInterceptor implements HandlerInterceptor {
 
-  public static String HEADER_STRING = "Authorization";
+  public static String AUTH_HEADER = "Authorization";
+  public static String REFRESH_HEADER = "Refresh-Token";
 
   private final IAccountDb accountDb;
   private final IAuthenticationTokenProvider authenticationTokenProvider;
@@ -53,7 +54,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
   }
 
   private String resolveToken(HttpServletRequest request) {
-    String bearerToken = request.getHeader(HEADER_STRING);
+    String bearerToken = request.getHeader(AUTH_HEADER);
     if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
       return bearerToken.substring(7);
     }

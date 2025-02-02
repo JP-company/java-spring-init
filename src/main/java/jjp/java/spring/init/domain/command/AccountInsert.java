@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 import jjp.java.spring.init.domain.model.type.AccountStatus;
 
 public record AccountInsert(
-    String name,
-    String phoneNumber,
-    String hashedPassword,
+    String email,
+    String nickname,
     AccountStatus status,
     LocalDateTime now
 ) {

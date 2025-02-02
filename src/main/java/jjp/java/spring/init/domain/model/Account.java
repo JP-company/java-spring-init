@@ -5,8 +5,7 @@ import jjp.java.spring.init.domain.model.type.AccountStatus;
 
 public record Account(
     int id,
-    String name,
-    String phoneNumber,
+    String nickname,
     AccountStatus status,
     LocalDateTime createdAt
 ) {
