@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
         .addPathPatterns("/api/**");
 
     registry.addInterceptor(this.serverTimeInterceptor)
-        .addPathPatterns("/api/**");
+        .addPathPatterns("/**");
   }
 
   @Override

@@ -12,6 +12,7 @@ public class AccountException extends CustomException {
   @Getter
   @RequiredArgsConstructor
   public enum AccountErrorKey implements ErrorKey {
+    EMAIL_LIMIT("오늘 하루 이메일 전송량을 초과했습니다(하루 10회)"),
     NO_ACCOUNT("존재하지 않는 계정입니다"),
     EXISTS_EMAIL("이미 존재하는 이메일 입니다"),
     WRONG_NAME_PATTERN("잘못된 이름 입니다"),

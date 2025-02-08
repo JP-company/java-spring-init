@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이메일 인증 로그인</title>
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 1.8em;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="email"], input[type="text"], button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1em;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #message {
+      color: red;
+      text-align: center;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+<h1>이메일 인증 로그인</h1>
+
+<!-- 📧 이메일 입력 폼 -->
+<div id="step">
+  <form id="emailForm"
+        hx-post="/api/v1/account/auth-code"
+        hx-target="#step"
+        hx-swap="outerHTML"
+        hx-headers='{"Content-Type": "application/json"}'
+        hx-include="[name='email']"
+        hx-ext="json-enc"
+        onsubmit="return false;"
+  >
+    <label>
+      <input type="email" name="email" placeholder="이메일 입력" required>
+    </label>
+    <button type="submit">인증 코드 받기</button>
+  </form>
+</div>
+
+<div id="response"></div>
+
+<!-- 메시지 표시 -->
+<div id="message"></div>
+
+<script>
+  document.body.addEventListener('htmx:afterRequest', function (event) {
+    const authHeader = event.detail.xhr.getResponseHeader('Authorization');
+    const refreshHeader = event.detail.xhr.getResponseHeader('Refresh-Token');
+
+    // ✅ 로그인 성공 시 홈으로 리디렉션
+    if (authHeader && refreshHeader && refreshHeader !== '') {
+      window.location.href = '/home';
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController()
+@RestController
 @RequestMapping("/api/v1/account")
 @RequiredArgsConstructor
 public class AccountApi {
@@ -36,18 +36,24 @@ public class AccountApi {
   @PublicApi
   @PostMapping("/auth-code")
   @Operation(summary = "이메일 인증코드 전송 요청")
-  public EmptyResponse postAccountAuthCode(
+  public String postAccountAuthCode(
       @RequestBody PostAccountAuthCodeBody body,
       @RequestServerTime LocalDateTime now
   ) {
     this.accountService.sendAuthCode(body.email(), now);
-    return EmptyResponse.SUCCESS;
+
+    return "<div id='step'>" +
+        "<form hx-get='/api/v1/account/start' hx-target='#step' hx-swap='outerHTML'>" +
+        "<label><input type='email' name='email' value='" + body.email() + "' readonly></label>" +
+        "<label><input type='text' name='authCode' placeholder='인증 코드 입력' required></label>" +
+        "<button type='submit'>인증 완료</button>" +
+        "</form></div>";
   }
 
   @PublicApi
   @GetMapping("/start")
   @Operation(summary = "시작하기")
-  public ResponseEntity<EmptyResponse> getAccountStart(
+  public ResponseEntity<String> getAccountStart(
       @Parameter GetAccountStartParam param,
       @RequestServerTime LocalDateTime now
   ) {
@@ -56,10 +62,27 @@ public class AccountApi {
         param.authCode(),
         now
     );
+
+    if (token.isEmpty()) {
+      return ResponseEntity.ok(
+          "<div id='step'>" +
+              "<form hx-post='/api/v1/account' hx-target='#step' hx-swap='outerHTML' hx-ext='json-enc'>"
+              +
+              "<label><input type='text' name='email' value='" + param.email()
+              + "' readonly></label>" +
+              "<label><input type='text' name='authCode' value='" + param.authCode()
+              + "' readonly></label>"
+              +
+              "<label><input type='text' name='nickname' placeholder='닉네임 입력' required></label>" +
+              "<button type='submit'>회원가입</button>" +
+              "</form></div>"
+      );
+    }
+
     return ResponseEntity.ok()
         .header(AUTH_HEADER, TOKEN_PREFIX + token.authToken())
         .header(REFRESH_HEADER, token.refreshToken())
-        .body(EmptyResponse.SUCCESS);
+        .body("");
   }
 
   @PublicApi

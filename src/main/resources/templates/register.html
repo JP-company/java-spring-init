@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>회원가입</title>
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+</head>
+<body>
+<h1>회원가입</h1>
+<form hx-post="/register" hx-target="#message" hx-swap="outerHTML">
+  <input type="hidden" name="email" th:value="${email}">
+  <label>닉네임: <input type="text" name="nickname" required></label><br>
+  <button type="submit">가입하기</button>
+</form>
+<div id="message"></div>
+</body>
+</html>
