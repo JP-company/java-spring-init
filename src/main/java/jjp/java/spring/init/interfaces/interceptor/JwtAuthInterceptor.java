@@ -25,11 +25,15 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
   private final IAuthenticationTokenProvider authenticationTokenProvider;
 
   @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-      throws Exception {
+  public boolean preHandle(
+    HttpServletRequest request,
+    HttpServletResponse response,
+    Object handler
+  ) throws Exception {
     if (handler instanceof HandlerMethod handlerMethod) {
-      boolean isPublicApi = handlerMethod.getMethod().isAnnotationPresent(PublicApi.class) ||
-          handlerMethod.getBeanType().isAnnotationPresent(PublicApi.class);
+      boolean isPublicApi =
+        handlerMethod.getMethod().isAnnotationPresent(PublicApi.class) ||
+        handlerMethod.getBeanType().isAnnotationPresent(PublicApi.class);
       if (isPublicApi) {
         return true;
       }
@@ -37,15 +41,22 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
     String token = resolveToken(request);
     if (token == null) {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or Missing Token");
+      response.sendError(
+        HttpServletResponse.SC_UNAUTHORIZED,
+        "Invalid or Missing Token"
+      );
       return false;
     }
 
     String accountId = authenticationTokenProvider.parseToken(token);
-    Optional<Account> account = this.accountDb.findOneBy(Integer.parseInt(accountId));
+    Optional<Account> account =
+      this.accountDb.findOneBy(Integer.parseInt(accountId));
 
     if (account.isEmpty()) {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Account Not Found");
+      response.sendError(
+        HttpServletResponse.SC_UNAUTHORIZED,
+        "Account Not Found"
+      );
       return false;
     }
 

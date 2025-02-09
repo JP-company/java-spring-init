@@ -8,15 +8,20 @@ import jjp.java.spring.init.domain.common.exception.AccountException;
 import jjp.java.spring.init.domain.model.EmailLimit;
 
 public record EmailAuthCodeCreator(
-    String email,
-    String authCode,
-    LocalDateTime expiryTime
+  String email,
+  String authCode,
+  LocalDateTime expiryTime
 ) {
-
   private static final short SEND_LIMIT = 10;
 
-  public EmailAuthCodeCreator validate(EmailLimit emailLimit, LocalDateTime now) {
-    if (now.toLocalDate().isEqual(emailLimit.date()) && emailLimit.count() >= SEND_LIMIT) {
+  public EmailAuthCodeCreator validate(
+    EmailLimit emailLimit,
+    LocalDateTime now
+  ) {
+    if (
+      now.toLocalDate().isEqual(emailLimit.date()) &&
+      emailLimit.count() >= SEND_LIMIT
+    ) {
       throw new AccountException(EMAIL_LIMIT);
     }
     return this;

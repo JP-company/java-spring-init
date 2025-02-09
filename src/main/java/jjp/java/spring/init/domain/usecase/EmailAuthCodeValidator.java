@@ -7,10 +7,7 @@ import java.time.LocalDateTime;
 import jjp.java.spring.init.domain.common.exception.AccountException;
 import jjp.java.spring.init.domain.model.EmailAuthCode;
 
-public record EmailAuthCodeValidator(
-    EmailAuthCode emailAuthCode
-) {
-
+public record EmailAuthCodeValidator(EmailAuthCode emailAuthCode) {
   public void validate(String authCode, LocalDateTime now) {
     if (emailAuthCode.expired(now)) {
       throw new AccountException(EXPIRED_EMAIL_AUTH_CODE);

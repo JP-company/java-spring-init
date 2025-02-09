@@ -27,13 +27,17 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "account", indexes = {
+@Table(
+  name = "account",
+  indexes = {
     @Index(name = "idx_account_name", columnList = "nickname"),
     @Index(name = "idx_account_status", columnList = "status"),
     @Index(name = "idx_account_created_at", columnList = "created_at"),
-}, uniqueConstraints = {
-    @UniqueConstraint(name = "uc_account_email", columnNames = {"email"})
-})
+  },
+  uniqueConstraints = {
+    @UniqueConstraint(name = "uc_account_email", columnNames = { "email" }),
+  }
+)
 public class AccountEntity {
 
   @Id
@@ -60,11 +64,11 @@ public class AccountEntity {
 
   public static AccountEntity of(AccountInsert accountInsert) {
     return new AccountEntity(
-        null,
-        accountInsert.email(),
-        accountInsert.nickname(),
-        accountInsert.status(),
-        accountInsert.now()
+      null,
+      accountInsert.email(),
+      accountInsert.nickname(),
+      accountInsert.status(),
+      accountInsert.now()
     );
   }
 

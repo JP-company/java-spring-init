@@ -20,7 +20,6 @@ public class CustomException extends RuntimeException {
   public enum Status {
     INTERNAL_SERVER_ERROR,
     BAD_REQUEST,
-    NOT_FOUND
+    NOT_FOUND,
   }
 }
-

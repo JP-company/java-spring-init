@@ -14,27 +14,28 @@ public class SwaggerConfig {
   @Bean
   public OpenAPI openApi() {
     return new OpenAPI()
-        .components(new Components())
-        .info(this.apiInfo())
-        .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-        .components(this.components());
+      .components(new Components())
+      .info(this.apiInfo())
+      .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+      .components(this.components());
   }
 
   private Info apiInfo() {
     return new Info()
-        .title("jjp spring init API Docs")
-        .description("test")
-        .version("1.0.0");
+      .title("jjp spring init API Docs")
+      .description("test")
+      .version("1.0.0");
   }
 
   private Components components() {
-    return new Components().addSecuritySchemes(
+    return new Components()
+      .addSecuritySchemes(
         "bearerAuth",
         new SecurityScheme()
-            .name("bearerAuth")
-            .type(SecurityScheme.Type.HTTP)
-            .scheme("bearer")
-            .bearerFormat("JWT")
-    );
+          .name("bearerAuth")
+          .type(SecurityScheme.Type.HTTP)
+          .scheme("bearer")
+          .bearerFormat("JWT")
+      );
   }
 }

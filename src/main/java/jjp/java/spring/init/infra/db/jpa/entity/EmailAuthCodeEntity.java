@@ -32,12 +32,13 @@ public class EmailAuthCodeEntity {
   @Column(name = "expiry_time", nullable = false)
   private LocalDateTime expiryTime;
 
-
-  public static EmailAuthCodeEntity of(EmailAuthCodeUpsert emailAuthCodeUpsert) {
+  public static EmailAuthCodeEntity of(
+    EmailAuthCodeUpsert emailAuthCodeUpsert
+  ) {
     return new EmailAuthCodeEntity(
-        emailAuthCodeUpsert.email(),
-        emailAuthCodeUpsert.authCode(),
-        emailAuthCodeUpsert.expiryTime()
+      emailAuthCodeUpsert.email(),
+      emailAuthCodeUpsert.authCode(),
+      emailAuthCodeUpsert.expiryTime()
     );
   }
 

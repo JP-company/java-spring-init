@@ -7,12 +7,14 @@ import jjp.java.spring.init.domain.command.LoginRefreshTokenUpsert;
 import jjp.java.spring.init.domain.common.exception.AccountException;
 
 public record AccountRefreshTokenVerify(
-    int accountId,
-    String newRefreshToken,
-    LocalDateTime newExpiryTime
+  int accountId,
+  String newRefreshToken,
+  LocalDateTime newExpiryTime
 ) {
-
-  public AccountRefreshTokenVerify validate(LocalDateTime currentExpiryTime, LocalDateTime now) {
+  public AccountRefreshTokenVerify validate(
+    LocalDateTime currentExpiryTime,
+    LocalDateTime now
+  ) {
     if (currentExpiryTime.isBefore(now)) {
       throw new AccountException(EXPIRED_REFRESH_TOKEN);
     }
@@ -21,9 +23,9 @@ public record AccountRefreshTokenVerify(
 
   public LoginRefreshTokenUpsert toRefreshTokenUpsert() {
     return new LoginRefreshTokenUpsert(
-        this.accountId,
-        this.newRefreshToken,
-        this.newExpiryTime
+      this.accountId,
+      this.newRefreshToken,
+      this.newExpiryTime
     );
   }
 }

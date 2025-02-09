@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <title>인증 코드 입력</title>
   <script src="https://unpkg.com/htmx.org@1.9.2"></script>
 </head>
+
 <body>
-<h1>인증 코드 입력</h1>
-<form hx-post="/verify" hx-target="body" hx-swap="outerHTML">
-  <input type="hidden" name="email" th:value="${email}">
-  <label>인증 코드: <input type="text" name="code" required></label><br>
-  <button type="submit">확인</button>
-</form>
-<div id="message"></div>
+  <h1>인증 코드 입력</h1>
+  <form hx-post="/verify" hx-target="body" hx-swap="outerHTML">
+    <input type="hidden" name="email" th:value="${email}">
+    <label>인증 코드: <input type="text" name="code" required></label><br>
+    <button type="submit">확인</button>
+  </form>
+  <div id="message"></div>
 </body>
+
 </html>

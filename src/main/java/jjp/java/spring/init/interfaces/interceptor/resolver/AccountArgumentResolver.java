@@ -15,18 +15,21 @@ public class AccountArgumentResolver implements HandlerMethodArgumentResolver {
 
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
-    return parameter.hasParameterAnnotation(RequestAccount.class) &&
-        Account.class.isAssignableFrom(parameter.getParameterType());
+    return (
+      parameter.hasParameterAnnotation(RequestAccount.class) &&
+      Account.class.isAssignableFrom(parameter.getParameterType())
+    );
   }
 
   @Override
   public Object resolveArgument(
-      MethodParameter parameter,
-      ModelAndViewContainer mavContainer,
-      NativeWebRequest webRequest,
-      WebDataBinderFactory binderFactory
+    MethodParameter parameter,
+    ModelAndViewContainer mavContainer,
+    NativeWebRequest webRequest,
+    WebDataBinderFactory binderFactory
   ) {
-    HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
+    HttpServletRequest request =
+      (HttpServletRequest) webRequest.getNativeRequest();
     return request.getAttribute("account");
   }
 }

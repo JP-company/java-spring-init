@@ -11,9 +11,9 @@ public class ServerTimeInterceptor implements HandlerInterceptor {
 
   @Override
   public boolean preHandle(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      Object handler
+    HttpServletRequest request,
+    HttpServletResponse response,
+    Object handler
   ) {
     LocalDateTime serverTime = LocalDateTime.now();
     request.setAttribute("serverTime", serverTime);

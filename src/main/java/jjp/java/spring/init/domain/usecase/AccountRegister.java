@@ -10,24 +10,27 @@ import jjp.java.spring.init.domain.common.exception.AccountException;
 import jjp.java.spring.init.domain.model.type.AccountStatus;
 
 public record AccountRegister(
-    String email,
-    String nickname,
-    LocalDateTime now
+  String email,
+  String nickname,
+  LocalDateTime now
 ) {
-
   private static final Pattern NICKNAME_PATTERN = Pattern.compile(
-      "^(?=.*[a-z])(?=.*\\d)(?=.*[!?@%^*+=])[a-zA-Z\\d!?@%^*+=]{8,20}$");
+    "^(?=.*[a-z])(?=.*\\d)(?=.*[!?@%^*+=])[a-zA-Z\\d!?@%^*+=]{8,20}$"
+  );
 
   public AccountInsert toInsert() {
     return new AccountInsert(
-        this.email,
-        this.nickname,
-        AccountStatus.ACTIVE,
-        this.now
+      this.email,
+      this.nickname,
+      AccountStatus.ACTIVE,
+      this.now
     );
   }
 
-  public AccountRegister validate(boolean emailAuthCodeVerified, boolean existsByEmail) {
+  public AccountRegister validate(
+    boolean emailAuthCodeVerified,
+    boolean existsByEmail
+  ) {
     if (!emailAuthCodeVerified) {
       throw new AccountException(WRONG_ACCESS);
     }

@@ -10,7 +10,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
-public class ServerTimeArgumentResolver implements HandlerMethodArgumentResolver {
+public class ServerTimeArgumentResolver
+  implements HandlerMethodArgumentResolver {
 
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
@@ -19,12 +20,13 @@ public class ServerTimeArgumentResolver implements HandlerMethodArgumentResolver
 
   @Override
   public Object resolveArgument(
-      MethodParameter parameter,
-      ModelAndViewContainer mavContainer,
-      NativeWebRequest webRequest,
-      WebDataBinderFactory binderFactory
+    MethodParameter parameter,
+    ModelAndViewContainer mavContainer,
+    NativeWebRequest webRequest,
+    WebDataBinderFactory binderFactory
   ) {
-    HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
+    HttpServletRequest request =
+      (HttpServletRequest) webRequest.getNativeRequest();
     return request.getAttribute("serverTime");
   }
 }

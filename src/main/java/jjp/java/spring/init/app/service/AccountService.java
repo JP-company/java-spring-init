@@ -37,13 +37,19 @@ public class AccountService {
   private final IEmailService emailService;
 
   public void sendAuthCode(String email, LocalDateTime now) {
-    EmailLimit emailLimit = this.accountDb.findOneEmailLimit(email)
-        .orElseGet(() -> this.accountDb.saveEmailLimit(email, 0, now.toLocalDate()));
+    EmailLimit emailLimit =
+      this.accountDb.findOneEmailLimit(email).orElseGet(() ->
+          this.accountDb.saveEmailLimit(email, 0, now.toLocalDate())
+        );
 
     String authCode = String.format("%06d", new Random().nextInt(1000000));
-    EmailAuthCodeUpsert upsert = new EmailAuthCodeCreator(email, authCode, now.plusMinutes(5))
-        .validate(emailLimit, now)
-        .toUpsert();
+    EmailAuthCodeUpsert upsert = new EmailAuthCodeCreator(
+      email,
+      authCode,
+      now.plusMinutes(5)
+    )
+      .validate(emailLimit, now)
+      .toUpsert();
 
     this.accountDb.upsertAuthCode(upsert);
     if (now.toLocalDate().isEqual(emailLimit.date())) {
@@ -55,69 +61,86 @@ public class AccountService {
   }
 
   public AuthenticationToken start(
-      String email,
-      String authCode,
-      LocalDateTime now
+    String email,
+    String authCode,
+    LocalDateTime now
   ) {
-    EmailAuthCode emailAuthCode = this.accountDb.findOneEmailAuthCodeBy(email)
-        .orElseThrow(() -> new AccountException(WRONG_ACCESS));
+    EmailAuthCode emailAuthCode =
+      this.accountDb.findOneEmailAuthCodeBy(email).orElseThrow(() ->
+          new AccountException(WRONG_ACCESS)
+        );
 
-    new EmailAuthCodeValidator(emailAuthCode)
-        .validate(authCode, now);
+    new EmailAuthCodeValidator(emailAuthCode).validate(authCode, now);
 
-    Optional<AccountLogin> optionalAccountLogin = this.accountDb.findOneLoginBy(email);
+    Optional<AccountLogin> optionalAccountLogin =
+      this.accountDb.findOneLoginBy(email);
     if (optionalAccountLogin.isEmpty()) {
       return AuthenticationToken.empty();
     }
 
     AccountLogin accountLogin = optionalAccountLogin.get();
     String refreshToken = UUID.randomUUID().toString();
-    LoginRefreshTokenUpsert refreshTokenUpsert =
-        new LoginRefreshTokenUpsert(accountLogin.id(), refreshToken, now.plusDays(7));
+    LoginRefreshTokenUpsert refreshTokenUpsert = new LoginRefreshTokenUpsert(
+      accountLogin.id(),
+      refreshToken,
+      now.plusDays(7)
+    );
 
     this.accountDb.upsertRefreshToken(refreshTokenUpsert);
-    String authToken = this.authenticationTokenProvider.generateToken(accountLogin.id());
+    String authToken =
+      this.authenticationTokenProvider.generateToken(accountLogin.id());
     return new AuthenticationToken(authToken, refreshToken);
   }
 
   @Transactional
   public AuthenticationToken register(
-      String email, String authCode, String nickname, LocalDateTime now
+    String email,
+    String authCode,
+    String nickname,
+    LocalDateTime now
   ) {
-    boolean emailAuthCodeVerified = this.accountDb.existsByEmailAndAuthCode(email, authCode);
+    boolean emailAuthCodeVerified =
+      this.accountDb.existsByEmailAndAuthCode(email, authCode);
     boolean existsByEmail = this.accountDb.existsBy(email);
 
     AccountInsert accountInsert = new AccountRegister(email, nickname, now)
-        .validate(emailAuthCodeVerified, existsByEmail)
-        .toInsert();
+      .validate(emailAuthCodeVerified, existsByEmail)
+      .toInsert();
 
     int accountId = this.accountDb.insert(accountInsert);
     String refreshToken = UUID.randomUUID().toString();
-    LoginRefreshTokenUpsert refreshTokenUpsert =
-        new LoginRefreshTokenUpsert(accountId, refreshToken, now.plusDays(7));
+    LoginRefreshTokenUpsert refreshTokenUpsert = new LoginRefreshTokenUpsert(
+      accountId,
+      refreshToken,
+      now.plusDays(7)
+    );
 
     this.accountDb.upsertRefreshToken(refreshTokenUpsert);
-    String authToken = this.authenticationTokenProvider.generateToken(accountId);
+    String authToken =
+      this.authenticationTokenProvider.generateToken(accountId);
     return new AuthenticationToken(authToken, refreshToken);
   }
 
   public AuthenticationToken refresh(String refreshToken, LocalDateTime now) {
-    RefreshToken currentRefreshToken = this.accountDb.findOneRefreshTokenBy(refreshToken)
-        .orElseThrow(() -> new AccountException(WRONG_REFRESH_TOKEN));
+    RefreshToken currentRefreshToken =
+      this.accountDb.findOneRefreshTokenBy(refreshToken).orElseThrow(() ->
+          new AccountException(WRONG_REFRESH_TOKEN)
+        );
 
     String newRefreshToken = UUID.randomUUID().toString();
-    LoginRefreshTokenUpsert refreshTokenUpsert =
-        new AccountRefreshTokenVerify(
-            currentRefreshToken.accountId(),
-            newRefreshToken,
-            now.plusDays(7)
-        )
-            .validate(currentRefreshToken.expiryTime(), now)
-            .toRefreshTokenUpsert();
+    LoginRefreshTokenUpsert refreshTokenUpsert = new AccountRefreshTokenVerify(
+      currentRefreshToken.accountId(),
+      newRefreshToken,
+      now.plusDays(7)
+    )
+      .validate(currentRefreshToken.expiryTime(), now)
+      .toRefreshTokenUpsert();
 
     this.accountDb.upsertRefreshToken(refreshTokenUpsert);
     String authToken =
-        this.authenticationTokenProvider.generateToken(currentRefreshToken.accountId());
+      this.authenticationTokenProvider.generateToken(
+          currentRefreshToken.accountId()
+        );
     return new AuthenticationToken(authToken, newRefreshToken);
   }
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>이메일 인증 로그인</title>
@@ -23,7 +24,9 @@
       margin-bottom: 10px;
     }
 
-    input[type="email"], input[type="text"], button {
+    input[type="email"],
+    input[type="text"],
+    button {
       width: 100%;
       padding: 12px;
       font-size: 1em;
@@ -50,43 +53,39 @@
     }
   </style>
 </head>
+
 <body>
-<h1>이메일 인증 로그인</h1>
+  <h1>이메일 인증 로그인</h1>
 
-<!-- 📧 이메일 입력 폼 -->
-<div id="step">
-  <form id="emailForm"
-        hx-post="/api/v1/account/auth-code"
-        hx-target="#step"
-        hx-swap="outerHTML"
-        hx-headers='{"Content-Type": "application/json"}'
-        hx-include="[name='email']"
-        hx-ext="json-enc"
-        onsubmit="return false;"
-  >
-    <label>
-      <input type="email" name="email" placeholder="이메일 입력" required>
-    </label>
-    <button type="submit">인증 코드 받기</button>
-  </form>
-</div>
+  <!-- 📧 이메일 입력 폼 -->
+  <div id="step">
+    <form id="emailForm" hx-post="/api/v1/account/auth-code" hx-target="#step" hx-swap="outerHTML"
+      hx-headers='{"Content-Type": "application/json"}' hx-include="[name='email']" hx-ext="json-enc"
+      onsubmit="return false;">
+      <label>
+        <input type="email" name="email" placeholder="이메일 입력" required>
+      </label>
+      <button type="submit">인증 코드 받기</button>
+    </form>
+  </div>
 
-<div id="response"></div>
+  <div id="response"></div>
 
-<!-- 메시지 표시 -->
-<div id="message"></div>
+  <!-- 메시지 표시 -->
+  <div id="message"></div>
 
-<script>
-  document.body.addEventListener('htmx:afterRequest', function (event) {
-    const authHeader = event.detail.xhr.getResponseHeader('Authorization');
-    const refreshHeader = event.detail.xhr.getResponseHeader('Refresh-Token');
+  <script>
+    document.body.addEventListener('htmx:afterRequest', function (event) {
+      const authHeader = event.detail.xhr.getResponseHeader('Authorization');
+      const refreshHeader = event.detail.xhr.getResponseHeader('Refresh-Token');
 
-    // ✅ 로그인 성공 시 홈으로 리디렉션
-    if (authHeader && refreshHeader && refreshHeader !== '') {
-      window.location.href = '/home';
-    }
-  });
-</script>
+      // ✅ 로그인 성공 시 홈으로 리디렉션
+      if (authHeader && refreshHeader && refreshHeader !== '') {
+        window.location.href = '/home';
+      }
+    });
+  </script>
 
 </body>
+
 </html>

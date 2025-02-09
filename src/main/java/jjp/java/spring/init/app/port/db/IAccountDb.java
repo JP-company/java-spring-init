@@ -12,7 +12,6 @@ import jjp.java.spring.init.domain.model.EmailLimit;
 import jjp.java.spring.init.domain.model.RefreshToken;
 
 public interface IAccountDb {
-
   int insert(AccountInsert accountInsert);
 
   Optional<EmailAuthCode> findOneEmailAuthCodeBy(String email);

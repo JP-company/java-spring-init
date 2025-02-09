@@ -22,15 +22,15 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(this.jwtAuthInterceptor)
-        .addPathPatterns("/api/**");
+    registry.addInterceptor(this.jwtAuthInterceptor).addPathPatterns("/api/**");
 
-    registry.addInterceptor(this.serverTimeInterceptor)
-        .addPathPatterns("/**");
+    registry.addInterceptor(this.serverTimeInterceptor).addPathPatterns("/**");
   }
 
   @Override
-  public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+  public void addArgumentResolvers(
+    List<HandlerMethodArgumentResolver> resolvers
+  ) {
     resolvers.add(this.accountArgumentResolver);
     resolvers.add(this.serverTimeArgumentResolver);
   }

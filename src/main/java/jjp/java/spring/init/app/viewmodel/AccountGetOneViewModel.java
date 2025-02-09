@@ -4,10 +4,7 @@ import java.time.LocalDateTime;
 import jjp.java.spring.init.domain.model.Account;
 import jjp.java.spring.init.domain.model.type.AccountStatus;
 
-public record AccountGetOneViewModel(
-    Account account
-) {
-
+public record AccountGetOneViewModel(Account account) {
   public int getAccountId() {
     return this.account.id();
   }

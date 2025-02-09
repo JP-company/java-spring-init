@@ -38,12 +38,14 @@ public class LoginRefreshTokenEntity {
   @Column(name = "expiry_time", nullable = false)
   private LocalDateTime expiryTime;
 
-  public static LoginRefreshTokenEntity of(LoginRefreshTokenUpsert refreshInsert) {
+  public static LoginRefreshTokenEntity of(
+    LoginRefreshTokenUpsert refreshInsert
+  ) {
     return new LoginRefreshTokenEntity(
-        refreshInsert.accountId(),
-        null,
-        refreshInsert.refreshToken(),
-        refreshInsert.expiryTime()
+      refreshInsert.accountId(),
+      null,
+      refreshInsert.refreshToken(),
+      refreshInsert.expiryTime()
     );
   }
 

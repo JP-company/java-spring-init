@@ -7,11 +7,10 @@ import jjp.java.spring.init.domain.command.LoginRefreshTokenUpsert;
 import jjp.java.spring.init.domain.common.exception.AccountException;
 
 public record AccountLoginVerify(
-    int accountId,
-    String refreshToken,
-    LocalDateTime expiryTime
+  int accountId,
+  String refreshToken,
+  LocalDateTime expiryTime
 ) {
-
   public AccountLoginVerify validate(boolean passwordMatches) {
     if (!passwordMatches) {
       throw new AccountException(INCORRECT_PASSWORD);
@@ -20,6 +19,10 @@ public record AccountLoginVerify(
   }
 
   public LoginRefreshTokenUpsert toRefreshTokenUpsert() {
-    return new LoginRefreshTokenUpsert(this.accountId, this.refreshToken, this.expiryTime);
+    return new LoginRefreshTokenUpsert(
+      this.accountId,
+      this.refreshToken,
+      this.expiryTime
+    );
   }
 }

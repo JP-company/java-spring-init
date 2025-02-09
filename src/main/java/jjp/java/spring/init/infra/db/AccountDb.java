@@ -39,42 +39,52 @@ public class AccountDb implements IAccountDb {
 
   @Override
   public Optional<EmailAuthCode> findOneEmailAuthCodeBy(String email) {
-    return this.emailAuthCodeEntityRepository.findById(email)
-        .map(EmailAuthCodeEntity::toModel);
+    return this.emailAuthCodeEntityRepository.findById(email).map(
+        EmailAuthCodeEntity::toModel
+      );
   }
 
   @Override
   public boolean existsByEmailAndAuthCode(String email, String authCode) {
-    return this.emailAuthCodeEntityRepository.existsByEmailAndAuthCode(email, authCode);
+    return this.emailAuthCodeEntityRepository.existsByEmailAndAuthCode(
+        email,
+        authCode
+      );
   }
 
   @Override
   public Optional<EmailLimit> findOneEmailLimit(String email) {
-    return this.emailLimitEntityRepository.findById(email)
-        .map(EmailLimitEntity::toModel);
+    return this.emailLimitEntityRepository.findById(email).map(
+        EmailLimitEntity::toModel
+      );
   }
 
   @Override
   public Optional<Account> findOneBy(int id) {
-    return this.accountEntityRepository.findOneById(id)
-        .map(AccountEntity::toAccountModel);
+    return this.accountEntityRepository.findOneById(id).map(
+        AccountEntity::toAccountModel
+      );
   }
 
   @Override
   public Optional<Account> findOneBy(String email) {
-    return accountEntityRepository.findOneByEmail(email)
-        .map(AccountEntity::toAccountModel);
+    return accountEntityRepository
+      .findOneByEmail(email)
+      .map(AccountEntity::toAccountModel);
   }
 
   @Override
   public void upsertAuthCode(EmailAuthCodeUpsert emailAuthCodeUpsert) {
-    this.emailAuthCodeEntityRepository.save(EmailAuthCodeEntity.of(emailAuthCodeUpsert));
+    this.emailAuthCodeEntityRepository.save(
+        EmailAuthCodeEntity.of(emailAuthCodeUpsert)
+      );
   }
 
   @Override
   public Optional<AccountLogin> findOneLoginBy(String email) {
-    return this.accountEntityRepository.findOneByEmail(email)
-        .map(AccountEntity::toAccountLoginModel);
+    return this.accountEntityRepository.findOneByEmail(email).map(
+        AccountEntity::toAccountLoginModel
+      );
   }
 
   @Override
@@ -84,13 +94,16 @@ public class AccountDb implements IAccountDb {
 
   @Override
   public void upsertRefreshToken(LoginRefreshTokenUpsert refreshTokenUpsert) {
-    this.loginRefreshEntityRepository.save(LoginRefreshTokenEntity.of(refreshTokenUpsert));
+    this.loginRefreshEntityRepository.save(
+        LoginRefreshTokenEntity.of(refreshTokenUpsert)
+      );
   }
 
   @Override
   public Optional<RefreshToken> findOneRefreshTokenBy(String refreshToken) {
-    return this.loginRefreshEntityRepository.findOneByRefreshToken(refreshToken)
-        .map(LoginRefreshTokenEntity::toModel);
+    return this.loginRefreshEntityRepository.findOneByRefreshToken(
+        refreshToken
+      ).map(LoginRefreshTokenEntity::toModel);
   }
 
   @Override
