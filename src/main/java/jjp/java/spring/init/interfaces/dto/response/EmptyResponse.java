@@ -1,4 +1,4 @@
-package jjp.java.spring.init.interfaces.api.dto.response;
+package jjp.java.spring.init.interfaces.dto.response;
 
 public record EmptyResponse() {
   public static EmptyResponse SUCCESS = new EmptyResponse();

@@ -17,7 +17,7 @@ public record EmailAuthCodeCreator(
   public static final Pattern EMAIL_PATTERN = Pattern.compile(
     "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
   );
-  private static final short SEND_LIMIT = 10;
+  private static final short SEND_LIMIT = 1000;
 
   public EmailAuthCodeCreator validate(
     EmailLimit emailLimit,

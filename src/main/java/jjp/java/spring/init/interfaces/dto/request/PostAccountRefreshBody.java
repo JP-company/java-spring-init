@@ -1,4 +1,4 @@
-package jjp.java.spring.init.interfaces.api.dto.request;
+package jjp.java.spring.init.interfaces.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

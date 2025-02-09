@@ -1,4 +1,4 @@
-package jjp.java.spring.init.interfaces.api.dto.response;
+package jjp.java.spring.init.interfaces.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jjp.java.spring.init.app.viewmodel.AccountStartStatus;

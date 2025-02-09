@@ -22,9 +22,25 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(this.jwtAuthInterceptor).addPathPatterns("/api/**");
+    registry
+      .addInterceptor(this.jwtAuthInterceptor)
+      .addPathPatterns("/**")
+      .excludePathPatterns(
+        "/js/**",
+        "/favicon.ico",
+        "/error/**",
+        "/webjars/**"
+      );
 
-    registry.addInterceptor(this.serverTimeInterceptor).addPathPatterns("/**");
+    registry
+      .addInterceptor(this.serverTimeInterceptor)
+      .addPathPatterns("/**")
+      .excludePathPatterns(
+        "/js/**",
+        "/favicon.ico",
+        "/error/**",
+        "/webjars/**"
+      );
   }
 
   @Override

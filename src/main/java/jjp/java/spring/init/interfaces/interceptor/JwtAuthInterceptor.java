@@ -2,8 +2,10 @@ package jjp.java.spring.init.interfaces.interceptor;
 
 import static jjp.java.spring.init.app.port.security.IAuthenticationTokenProvider.TOKEN_PREFIX;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Base64;
 import java.util.Optional;
 import jjp.java.spring.init.app.port.db.IAccountDb;
 import jjp.java.spring.init.app.port.security.IAuthenticationTokenProvider;
@@ -30,6 +32,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     HttpServletResponse response,
     Object handler
   ) throws Exception {
+    System.out.println(request.getRequestURI());
     if (handler instanceof HandlerMethod handlerMethod) {
       boolean isPublicApi =
         handlerMethod.getMethod().isAnnotationPresent(PublicApi.class) ||
@@ -40,7 +43,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     }
 
     String token = resolveToken(request);
-    if (token == null) {
+    if (token == null || !token.startsWith(TOKEN_PREFIX)) {
       response.sendError(
         HttpServletResponse.SC_UNAUTHORIZED,
         "Invalid or Missing Token"
@@ -48,7 +51,9 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
       return false;
     }
 
-    String accountId = authenticationTokenProvider.parseToken(token);
+    String accountId = authenticationTokenProvider.parseToken(
+      token.substring(TOKEN_PREFIX.length())
+    );
     Optional<Account> account =
       this.accountDb.findOneBy(Integer.parseInt(accountId));
 
@@ -65,9 +70,12 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
   }
 
   private String resolveToken(HttpServletRequest request) {
-    String bearerToken = request.getHeader(AUTH_HEADER);
-    if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
-      return bearerToken.substring(7);
+    if (request.getCookies() != null) {
+      for (Cookie cookie : request.getCookies()) {
+        if (AUTH_HEADER.equals(cookie.getName())) {
+          return new String(Base64.getUrlDecoder().decode(cookie.getValue()));
+        }
+      }
     }
     return null;
   }
