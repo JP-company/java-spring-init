@@ -6,6 +6,7 @@ import static jjp.java.spring.init.interfaces.interceptor.JwtAuthInterceptor.REF
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import jjp.java.spring.init.app.service.AccountService;
 import jjp.java.spring.init.domain.model.Account;
@@ -37,7 +38,7 @@ public class AccountApi {
   @PostMapping("/auth-code")
   @Operation(summary = "이메일 인증코드 전송 요청")
   public String postAccountAuthCode(
-    @RequestBody PostAccountAuthCodeBody body,
+    @Valid @RequestBody PostAccountAuthCodeBody body,
     @RequestServerTime LocalDateTime now
   ) {
     this.accountService.sendAuthCode(body.email(), now);

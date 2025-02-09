@@ -23,6 +23,8 @@ public class AccountException extends CustomException {
     ),
     WRONG_REFRESH_TOKEN("다시 로그인 해주세요"),
     WRONG_ACCESS("잘못된 접근입니다"),
+    WRONG_NICKNAME_PATTERN("닉네임은 2~6자의 한글, 영문, 숫자만 가능합니다"),
+    WRONG_EMAIL_PATTERN("이메일 형식이 올바르지 않습니다"),
     EXPIRED_REFRESH_TOKEN("로그인 시간이 만료되었습니다. 다시 로그인 해주세요"),
     EXPIRED_EMAIL_AUTH_CODE("인증 시간이 만료되었습니다"),
     INCORRECT_EMAIL_AUTH_CODE("인증 번호가 일치하지 않습니다");
