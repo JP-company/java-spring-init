@@ -3,7 +3,7 @@ package jjp.java.spring.init.interfaces.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import jjp.java.spring.init.app.viewmodel.AccountGetOneViewModel;
-import jjp.java.spring.init.domain.model.type.AccountStatus;
+import jjp.java.spring.init.domain.model.auth.AccountStatus;
 
 public record GetAccountResponse(
   @Schema(example = "1") int accountId,

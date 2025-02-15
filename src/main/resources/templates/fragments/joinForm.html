@@ -1,0 +1,17 @@
+<div id="step">
+    <form hx-post="/view/v1/account/email" hx-target="#step" hx-ext="json-enc" hx-encoding="application/json">
+        <div class="mb-3">
+            <input type="email" class="form-control form-control-lg" name="email" th:value="${email}" readonly
+                style="font-size: 1.2rem;">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control form-control-lg" name="authCode" th:value="${authCode}" readonly
+                style="font-size: 1.2rem;">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control form-control-lg" name="nickname" placeholder="닉네임 입력" required
+                style="font-size: 1.2rem;">
+        </div>
+        <button type="submit" class="btn btn-success w-100 btn-lg" style="font-size: 1.2rem;">회원가입</button>
+    </form>
+</div>

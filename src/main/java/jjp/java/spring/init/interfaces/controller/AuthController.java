@@ -7,45 +7,73 @@ import static jjp.java.spring.init.interfaces.interceptor.JwtAuthInterceptor.REF
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Base64;
-import jjp.java.spring.init.app.service.AccountService;
+import jjp.java.spring.init.app.service.AuthService;
+import jjp.java.spring.init.domain.model.account.Account;
 import jjp.java.spring.init.domain.model.auth.AuthenticationToken;
-import jjp.java.spring.init.interfaces.dto.request.PostAccountEmailBody;
+import jjp.java.spring.init.interfaces.dto.request.GetAuthEmailBody;
+import jjp.java.spring.init.interfaces.dto.request.PostAuthEmailCodeBody;
 import jjp.java.spring.init.interfaces.interceptor.annotation.PublicApi;
+import jjp.java.spring.init.interfaces.interceptor.annotation.RequestAccount;
 import jjp.java.spring.init.interfaces.interceptor.annotation.RequestServerTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/view/v1/account")
+@RequestMapping("/view/v1/auth")
 @RequiredArgsConstructor
-public class AccountController {
+public class AuthController {
 
-  private final AccountService accountService;
+  private final AuthService authService;
+
+  @PublicApi
+  @PostMapping("/email/code")
+  @Operation(summary = "이메일 인증코드 전송")
+  public String postAuthEmailCode(
+    @Valid @RequestBody PostAuthEmailCodeBody body,
+    @RequestServerTime LocalDateTime now,
+    Model model
+  ) {
+    this.authService.sendEmailAuthCode(body.email(), now);
+
+    model.addAttribute("email", body.email());
+    return "fragments/authCodeForm";
+  }
 
   @PublicApi
   @PostMapping("/email")
-  @Operation(summary = "이메일 계정 등록")
-  public String postAccountEmail(
-    @RequestBody PostAccountEmailBody body,
+  @Operation(summary = "이메일 인증코드 확인")
+  public String getAuthEmail(
+    @Valid @RequestBody GetAuthEmailBody body,
     @RequestServerTime LocalDateTime now,
+    Model model,
     HttpServletResponse response
   ) {
     AuthenticationToken token =
-      this.accountService.registerEmailAccount(
-          body.email(),
-          body.authCode(),
-          body.nickname(),
-          now
-        );
+      this.authService.authByEmail(body.email(), body.authCode(), now);
 
-    addCookie(response, AUTH_HEADER, TOKEN_PREFIX + token.authToken());
+    if (token.isEmpty()) {
+      model.addAttribute("email", body.email());
+      model.addAttribute("authCode", body.authCode());
+      return "fragments/joinForm";
+    }
+
+    this.addCookie(response, AUTH_HEADER, TOKEN_PREFIX + token.authToken());
     response.setHeader(REFRESH_HEADER, token.refreshToken());
     return "redirect:/home";
+  }
+
+  @PostMapping("/logout")
+  @Operation(summary = "로그아웃")
+  public String postAuthLogout(@RequestAccount Account account) {
+    this.authService.logout(account.id());
+    return "redirect:/";
   }
 
   private void addCookie(

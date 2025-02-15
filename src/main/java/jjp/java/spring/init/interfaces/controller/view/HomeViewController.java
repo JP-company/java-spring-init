@@ -11,8 +11,8 @@ public class HomeViewController {
 
   @PublicApi
   @GetMapping("")
-  public String email() {
-    return "pages/email";
+  public String auth() {
+    return "pages/auth";
   }
 
   @GetMapping("/home")

@@ -1,7 +1,13 @@
 <div id="step">
-    <form hx-post="/view/v1/account/start" hx-target="#step" hx-swap="outerHTML" hx-ext="json-enc">
-        <label><input type="email" name="email" th:value="${email}" readonly></label>
-        <label><input type="text" name="authCode" placeholder="인증 코드 입력" required></label>
-        <button type="submit">인증 완료</button>
+    <form hx-post="/view/v1/auth/email" hx-ext="json-enc" hx-encoding="application/json">
+        <div class="mb-3">
+            <input type="email" class="form-control form-control-lg" name="email" th:value="${email}" readonly
+                style="font-size: 1.2rem;">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control form-control-lg" name="authCode" placeholder="인증 코드 입력" required
+                style="font-size: 1.2rem;">
+        </div>
+        <button type="submit" class="btn btn-success w-100 btn-lg" style="font-size: 1.2rem;">인증 완료</button>
     </form>
 </div>

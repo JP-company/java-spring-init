@@ -6,8 +6,8 @@ import static jjp.java.spring.init.interfaces.interceptor.JwtAuthInterceptor.REF
 
 import io.swagger.v3.oas.annotations.Operation;
 import java.time.LocalDateTime;
-import jjp.java.spring.init.app.service.AccountService;
-import jjp.java.spring.init.domain.model.AuthenticationToken;
+import jjp.java.spring.init.app.service.AuthService;
+import jjp.java.spring.init.domain.model.auth.AuthenticationToken;
 import jjp.java.spring.init.interfaces.dto.request.PostAccountRefreshBody;
 import jjp.java.spring.init.interfaces.dto.response.EmptyResponse;
 import jjp.java.spring.init.interfaces.interceptor.annotation.PublicApi;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthApi {
 
-  private final AccountService accountService;
+  private final AuthService authService;
 
   @PublicApi
   @PostMapping("/refresh")
@@ -34,7 +34,7 @@ public class AuthApi {
     @RequestServerTime LocalDateTime now
   ) {
     AuthenticationToken token =
-      this.accountService.refresh(body.refreshToken(), now);
+      this.authService.refresh(body.refreshToken(), now);
     return ResponseEntity.ok()
       .header(AUTH_HEADER, TOKEN_PREFIX + token.authToken())
       .header(REFRESH_HEADER, token.refreshToken())

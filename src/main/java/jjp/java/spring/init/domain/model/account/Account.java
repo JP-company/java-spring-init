@@ -1,11 +1,11 @@
-package jjp.java.spring.init.domain.command;
+package jjp.java.spring.init.domain.model.account;
 
 import java.time.LocalDateTime;
 import jjp.java.spring.init.domain.model.auth.AccountStatus;
 
-public record AccountInsert(
-  String email,
+public record Account(
+  int id,
   String nickname,
   AccountStatus status,
-  LocalDateTime now
+  LocalDateTime createdAt
 ) {}

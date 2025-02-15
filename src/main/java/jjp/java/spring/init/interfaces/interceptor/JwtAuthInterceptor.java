@@ -9,7 +9,7 @@ import java.util.Base64;
 import java.util.Optional;
 import jjp.java.spring.init.app.port.db.IAccountDb;
 import jjp.java.spring.init.app.port.security.IAuthenticationTokenProvider;
-import jjp.java.spring.init.domain.model.Account;
+import jjp.java.spring.init.domain.model.account.Account;
 import jjp.java.spring.init.interfaces.interceptor.annotation.PublicApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

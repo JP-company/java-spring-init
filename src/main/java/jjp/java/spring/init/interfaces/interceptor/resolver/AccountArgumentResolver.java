@@ -1,7 +1,7 @@
 package jjp.java.spring.init.interfaces.interceptor.resolver;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jjp.java.spring.init.domain.model.Account;
+import jjp.java.spring.init.domain.model.account.Account;
 import jjp.java.spring.init.interfaces.interceptor.annotation.RequestAccount;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

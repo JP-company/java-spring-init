@@ -29,7 +29,9 @@ public class WebConfig implements WebMvcConfigurer {
         "/js/**",
         "/favicon.ico",
         "/error/**",
-        "/webjars/**"
+        "/webjars/**",
+        "/swagger-ui/**",
+        "/v3/api-docs/**"
       );
 
     registry
