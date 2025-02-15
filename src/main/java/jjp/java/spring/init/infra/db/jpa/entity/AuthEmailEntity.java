@@ -63,11 +63,11 @@ public class AuthEmailEntity {
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
-  public static AuthEmailEntity of(EmailAuthCodeUpsert emailAuthCodeUpsert) {
+  public static AuthEmailEntity of(EmailAuthCodeUpsert command) {
     return AuthEmailEntity.builder()
-      .email(emailAuthCodeUpsert.email())
-      .authCode(emailAuthCodeUpsert.authCode())
-      .expiryTime(emailAuthCodeUpsert.expiryTime())
+      .email(command.email())
+      .authCode(command.authCode())
+      .expiryTime(command.expiryTime())
       .build();
   }
 

@@ -23,21 +23,16 @@ public class AuthDb implements IAuthDb {
   private final IAuthRefreshEntityRepository loginRefreshEntityRepository;
 
   @Override
-  public void upsertAuthCode(EmailAuthCodeUpsert emailAuthCodeUpsert) {
-    Optional<AuthEmailEntity> entity =
-      this.authEmailEntityRepository.findOneByEmail(
-          emailAuthCodeUpsert.email()
-        );
-    if (entity.isPresent()) {
+  public void upsertAuthCode(EmailAuthCodeUpsert command) {
+    if (this.authEmailEntityRepository.existsByEmail(command.email())) {
       this.authEmailEntityRepository.updateAuthCodeByEmail(
-          emailAuthCodeUpsert.authCode(),
-          emailAuthCodeUpsert.expiryTime(),
-          emailAuthCodeUpsert.email()
+          command.authCode(),
+          command.expiryTime(),
+          command.email()
         );
       return;
     }
-    AuthEmailEntity authEmailEntity = AuthEmailEntity.of(emailAuthCodeUpsert);
-    this.authEmailEntityRepository.save(authEmailEntity);
+    this.authEmailEntityRepository.saveAndFlush(AuthEmailEntity.of(command));
   }
 
   @Override

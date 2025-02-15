@@ -7,6 +7,7 @@ import jjp.java.spring.init.interfaces.interceptor.resolver.AccountArgumentResol
 import jjp.java.spring.init.interfaces.interceptor.resolver.ServerTimeArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -21,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
   private final ServerTimeArgumentResolver serverTimeArgumentResolver;
 
   @Override
-  public void addInterceptors(InterceptorRegistry registry) {
+  public void addInterceptors(@NonNull InterceptorRegistry registry) {
     registry
       .addInterceptor(this.jwtAuthInterceptor)
       .addPathPatterns("/**")
@@ -47,7 +48,7 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addArgumentResolvers(
-    List<HandlerMethodArgumentResolver> resolvers
+    @NonNull List<HandlerMethodArgumentResolver> resolvers
   ) {
     resolvers.add(this.accountArgumentResolver);
     resolvers.add(this.serverTimeArgumentResolver);

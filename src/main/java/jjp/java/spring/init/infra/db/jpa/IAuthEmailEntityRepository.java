@@ -11,6 +11,8 @@ public interface IAuthEmailEntityRepository
   extends JpaRepository<AuthEmailEntity, Integer> {
   Optional<AuthEmailEntity> findOneByEmail(String email);
 
+  boolean existsByEmail(String email);
+
   boolean existsByEmailAndAuthCode(String email, String authCode);
 
   @Modifying
